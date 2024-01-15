@@ -5,14 +5,18 @@ import Allmessages from "../Components/Allmessages";
 
 const Chat = () => {
     const [input, setInput] = useState("");
-    let totalMessages = JSON.parse(localStorage.getItem("messages"))
-    let [messages, setMessages] = useState(totalMessages);
 
+    // If there is no messages array in localStorage
+    if (!localStorage.getItem("messages")) {
+        localStorage.setItem("messages", "[]")
+    }
+
+    let totalMessages = JSON.parse(localStorage.getItem("messages"));
+    let messages = totalMessages;
 
     // Send Message Button
     const sendMessage = async (e) => {
         e.preventDefault();
-
         if (input == "") {
             return toast.warning("Please Type Your Message", {
                 position: 'top-center',
@@ -25,6 +29,15 @@ const Chat = () => {
 
         // Getting user token from localstorage
         const savedToken = localStorage.getItem("token");
+        if (!savedToken) {
+            return toast.error("Unauthorized! Please login.", {
+                position: 'top-center',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+            });
+        }
 
         const url = "http://localhost:3000/api";
         const data = {
@@ -36,21 +49,23 @@ const Chat = () => {
             body: JSON.stringify(data)
         }
 
-        // Sending fetch request
         try {
+            // Sending fetch request
             const response = await fetch(url, requestObject);
             const responseData = await response.json();
-            console.log(responseData.response, responseData.id);
 
-            setMessages([...messages, {
+            // Pushing new response to messages Array
+            messages.push({
                 id: responseData.id,
                 yourMessage: input,
                 geniusMessage: responseData.response
-            }]);
+            });
 
+            let stringifyMessages = JSON.stringify(messages);
             // Setting messages to localstorage
-            localStorage.setItem("messages", JSON.stringify(messages));
+            localStorage.setItem("messages", stringifyMessages);
 
+            // Clearing input field
             setInput("");
 
         } catch (error) {
