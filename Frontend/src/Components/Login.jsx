@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../assets/styles/login.css";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { useState } from "react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   // Login Submit Button
   const loginSubmitBtn = async (e) => {
@@ -38,6 +39,17 @@ const Login = () => {
       const response = await fetch(url, requestOptions);
 
       const responseData = await response.json();
+      if (responseData.error) {
+        return toast.error(`${responseData.error}`, {
+          position: 'top-center',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+      }
+
+      // If No Error
       toast.success(`${responseData.message}`, {
         position: 'top-center',
         autoClose: 2000,
@@ -45,11 +57,14 @@ const Login = () => {
         closeOnClick: true,
         pauseOnHover: true,
       });
-
+      
       // Saving token to localStorage
       if (responseData.token) {
         localStorage.setItem("token", responseData.token);
       }
+      navigate("/chat")
+
+      // clearing input field
       setEmail("");
       setPassword("");
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../assets/styles/signup.css"
 
@@ -8,6 +8,7 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [otp, setOtp] = useState("");
+    const navigate = useNavigate();
 
     // SendOtpButton
     const sendOtp = async () => {
@@ -33,6 +34,16 @@ const Signup = () => {
             const response = await fetch(url, requestOptions);
 
             const responseData = await response.json();
+            if (responseData.error) {
+                return toast.error(`${responseData.error}`, {
+                    position: 'top-center',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                });
+            }
+
             return toast.success(`${responseData.message}`, {
                 position: 'top-center',
                 autoClose: 2000,
@@ -81,18 +92,29 @@ const Signup = () => {
             // Sending signup fetch request
             const response = await fetch(url, requestOptions);
             const responseData = await response.json();
-            
-            // Saving token to localstorage
-            if (responseData.token) {
-                localStorage.setItem("token", responseData.token);
+            if (responseData.error) {
+                return toast.error(`${responseData.error}`, {
+                    position: 'top-center',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                });
             }
-            return toast.success(`${responseData.message}`, {
+
+            // If no error
+            toast.success(`${responseData.message}`, {
                 position: 'top-center',
                 autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
             });
+            // Saving token to localstorage
+            if (responseData.token) {
+                localStorage.setItem("token", responseData.token);
+            }
+            navigate("/chat");
 
         } catch (error) {
             toast.error(`${error.message}`, {

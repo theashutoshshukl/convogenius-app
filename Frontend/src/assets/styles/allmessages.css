@@ -1,8 +1,13 @@
-/* Chat Container */
 .chat-container {
     width: 600px;
     display: flex;
     flex-direction: column;
+    padding: 0px 10px;
+}
+
+.chat-container i {
+    color: red;
+    cursor: pointer;
 }
 
 .chats {
@@ -10,10 +15,15 @@
     overflow: auto;
 }
 
-.chat-container h2 {
+.chat-top-heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-top-heading h2 {
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 0px;
     color: yellow;
 }
 

@@ -22,23 +22,23 @@ const signup = async (req, res) => {
         // Checking user exist or not
         const userExists = await User.findOne({ email: email.toLowerCase() });
         if (userExists) {
-            return res.status(409).json({ message: "Email already exists" });
+            return res.status(409).json({ error: "Email already exists" });
         }
 
         // Retrieve the OTP value from the cache
         const cachedOTP = cache.get(email);
         // Otp verification
         if (cachedOTP === undefined) {
-            return res.status(400).json({ message: "OTP expired or not found" });
+            return res.status(400).json({ error: "OTP expired or not found" });
         }
         else if (cachedOTP !== userOtp) {
-            return res.status(400).json({ message: "OTP did not matched" });
+            return res.status(400).json({ error: "OTP did not matched" });
         }
 
         // Hash user password
         const hashedPassword = await bcrypt.hash(password, 10);
         if (!hashedPassword) {
-            return res.status(400).json({ message: "Something went wrong" });
+            return res.status(400).json({ error: "Something went wrong" });
         }
 
         // User creation
@@ -52,7 +52,7 @@ const signup = async (req, res) => {
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, SECRET_KEY);
         res.status(201).json({ message: "Signed up successfully", token });
     } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -73,7 +73,7 @@ const verificationEmail = async (req, res) => {
         // Checking user exist or not
         const userExists = await User.findOne({ email: email.toLowerCase() });
         if (userExists) {
-            return res.status(409).json({ message: "Email already exists" });
+            return res.status(409).json({ error: "Email already exists" });
         }
 
         // Genrating OTP
@@ -107,15 +107,13 @@ const verificationEmail = async (req, res) => {
             if (error) {
                 console.log(error);
             } else {
-                res.status(200).json({ message: "Otp sent successfully" });
+                return res.status(200).json({ message: "OTP Sent Successfully" });
             }
         });
 
-        return res.status(200).json({ message: "OTP Sent Successfully" });
-
     } catch (error) {
         console.error(error.message);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 
 }
@@ -127,13 +125,13 @@ const login = async (req, res) => {
         // Checking user Exist or not
         const userExists = await User.findOne({ email: email.toLowerCase() });
         if (!userExists) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ error: "User not found" });
         }
 
         // Comparing password
         const matchPassword = await bcrypt.compare(password, userExists.password);
         if (!matchPassword) {
-            return res.status(400).json({ message: "Wrong password" });
+            return res.status(400).json({ error: "Wrong password" });
         }
 
         // Signing token
@@ -141,7 +139,7 @@ const login = async (req, res) => {
         res.status(200).json({ message: "Logged in successfully", token });
 
     } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
