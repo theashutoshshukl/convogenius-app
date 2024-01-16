@@ -60,7 +60,7 @@
     margin-right: 10px;
 }
 
-.signupBtn:hover{
+.signupBtn:hover {
     background-color: rgb(28, 26, 26);
 }
 
@@ -76,7 +76,7 @@
     line-height: normal;
 }
 
-.loginBtn:hover{
+.loginBtn:hover {
     background-color: rgb(40, 40, 40);
 }
 
@@ -93,6 +93,7 @@
 @media screen and (max-width: 600px) {
     .main h1 {
         font-size: 40px;
+        margin-top: 40px;
     }
 
     .main p {

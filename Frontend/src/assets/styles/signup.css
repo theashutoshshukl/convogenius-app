@@ -6,6 +6,12 @@
     align-items: center;
 }
 
+.disabled{
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Signup Form */
 .signup-form {
     padding: 20px;

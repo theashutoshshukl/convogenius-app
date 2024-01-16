@@ -5,13 +5,16 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // Open Nav
+    // OpenNav & CloseNav
     const openNav = () => {
         setIsMenuOpen(true);
     }
-
-    // Close Nav
     const closeNav = () => {
+        setIsMenuOpen(false);
+    }
+
+    // When link clicked
+    const closeClickedMenu = () =>{
         setIsMenuOpen(false);
     }
 
@@ -61,23 +64,23 @@ const Navbar = () => {
             {/* Mobile, Tablet Navbar */}
             <section className={`mobile-navbar d-${isMenuOpen ? 'block' : 'none'}`}>
                 <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/about">About Us</Link></li>
-                    <li><Link to="/contact">Contact Us</Link></li>
+                    <li onClick={closeClickedMenu}><Link to="/">Home</Link></li>
+                    <li onClick={closeClickedMenu}><Link to="/about">About Us</Link></li>
+                    <li onClick={closeClickedMenu}><Link to="/contact">Contact Us</Link></li>
                 </ul>
 
                 {/* Mobile Socials */}
                 <div className="mobile-socials">
                     {/* Github */}
-                    <Link to="https://github.com/theashutoshshukl" target="_blank">
+                    <Link onClick={closeClickedMenu} to="https://github.com/theashutoshshukl" target="_blank">
                         <i className="fa-brands fa-xl fa-github"></i>
                     </Link>
                     {/* Linkedin */}
-                    <Link to="https://www.linkedin.com/in/ashutoshshukl01/" target="_blank">
+                    <Link onClick={closeClickedMenu} to="https://www.linkedin.com/in/ashutoshshukl01/" target="_blank">
                         <i className="fa-brands fa-xl fa-linkedin"></i>
                     </Link>
                     {/* Web */}
-                    <Link to="https://ashutoshshukl.com/" target="_blank">
+                    <Link onClick={closeClickedMenu} to="https://ashutoshshukl.com/" target="_blank">
                         <i className="fa-solid fa-xl fa-globe"></i>
                     </Link>
                 </div>
