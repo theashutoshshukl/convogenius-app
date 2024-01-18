@@ -19,7 +19,8 @@
     "mongoose": "^8.1.0",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.9.8",
-    "openai": "^4.24.7"
+    "openai": "^4.24.7",
+    "saslprep": "^1.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"
