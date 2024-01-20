@@ -7,6 +7,12 @@
     align-items: center;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .chat h1 {
     font-family: 'Acme', sans-serif;
     color: yellow;
